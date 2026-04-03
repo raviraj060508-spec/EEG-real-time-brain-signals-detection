@@ -4,55 +4,78 @@ import matplotlib.pyplot as plt
 import time
 import random
 
-# -----------------------------
-# Page Config
-# -----------------------------
-st.set_page_config(page_title="EEG AI Monitor", layout="wide")
+st.set_page_config(page_title="EEG Detecting System", layout="wide")
 
-# -----------------------------
-# Custom CSS (Modern UI)
-# -----------------------------
+# ------------------ CUSTOM CSS ------------------
 st.markdown("""
 <style>
-body {
-    background-color: #0e1117;
+
+/* Background Gradient */
+.stApp {
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
     color: white;
 }
-.main {
-    background-color: #0e1117;
+
+/* Remove default padding */
+.block-container {
+    padding-top: 2rem;
 }
-h1, h2, h3 {
+
+/* Hero Title */
+.hero {
+    text-align: center;
+    padding: 50px 20px;
+}
+
+.hero h1 {
+    font-size: 60px;
+    font-weight: bold;
     color: #00f2ff;
 }
+
+.hero p {
+    font-size: 20px;
+    color: #cfcfcf;
+}
+
+/* Cards */
 .card {
-    padding: 20px;
-    border-radius: 15px;
-    background: rgba(255,255,255,0.05);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    background: rgba(255, 255, 255, 0.08);
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    backdrop-filter: blur(10px);
     margin-bottom: 20px;
 }
+
+/* Button */
+.stButton>button {
+    background: linear-gradient(90deg, #00f2ff, #4facfe);
+    color: black;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
 </style>
 """, unsafe_allow_html=True)
 
-# -----------------------------
-# Title
-# -----------------------------
-st.title("🧠 EEG AI Monitoring Dashboard")
-st.write("Real-time neurological signal analysis system")
+# ------------------ HERO SECTION ------------------
+st.markdown("""
+<div class="hero">
+    <h1>🧠 EEG Detecting System</h1>
+    <p>AI-Powered Neurological Monitoring & Brain Signal Analysis</p>
+</div>
+""", unsafe_allow_html=True)
 
-# -----------------------------
-# Sidebar Controls
-# -----------------------------
-st.sidebar.header("⚙️ Controls")
+# ------------------ SIDEBAR ------------------
+st.sidebar.title("⚙️ Control Panel")
 
 wave_type = st.sidebar.selectbox(
-    "Brain Wave",
+    "Select Brain Wave",
     ["Alpha", "Beta", "Theta", "Delta"]
 )
 
-# -----------------------------
-# Generate Signal
-# -----------------------------
+# ------------------ SIGNAL GENERATION ------------------
 t = np.linspace(0, 10, 500)
 
 if wave_type == "Alpha":
@@ -66,43 +89,42 @@ else:
 
 signal = signal + np.random.normal(0, 0.3, len(t))
 
-# -----------------------------
-# Layout (Columns)
-# -----------------------------
+# ------------------ LAYOUT ------------------
 col1, col2 = st.columns([2,1])
 
-# -----------------------------
-# EEG Chart
-# -----------------------------
+# ------------------ GRAPH ------------------
 with col1:
+    st.markdown('<div class="card">', unsafe_allow_html=True)
     st.subheader("📊 Live EEG Signal")
 
     fig, ax = plt.subplots()
     ax.plot(t, signal)
-    ax.set_facecolor("#0e1117")
-    ax.set_title("Brain Signal", color="white")
+    ax.set_facecolor("#0f2027")
+    ax.set_title("Brain Activity", color="white")
     ax.tick_params(colors='white')
 
     st.pyplot(fig)
+    st.markdown('</div>', unsafe_allow_html=True)
 
-# -----------------------------
-# AI Status Panel
-# -----------------------------
+# ------------------ AI PANEL ------------------
 with col2:
-    st.subheader("🤖 AI Status")
+    st.markdown('<div class="card">', unsafe_allow_html=True)
+    st.subheader("🤖 AI Analysis")
 
     avg = np.mean(np.abs(signal))
 
     if avg > 1:
-        status = "⚠️ High Seizure Risk"
+        st.error("⚠️ High Seizure Risk")
     elif avg > 0.6:
-        status = "😟 Moderate Stress"
+        st.warning("😟 Moderate Stress")
     else:
-        status = "✅ Normal"
+        st.success("✅ Normal Brain Activity")
 
-    st.markdown(f'<div class="card">{status}</div>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
 
+    st.markdown('<div class="card">', unsafe_allow_html=True)
     st.subheader("⚡ Stimulus Test")
+
     if st.button("Apply Stimulus"):
         st.write("Analyzing...")
         time.sleep(1)
@@ -112,8 +134,10 @@ with col2:
             "Abnormal Response ⚠️"
         ]))
 
-# -----------------------------
-# Footer
-# -----------------------------
-st.markdown("---")
-st.write("Developed for Neurological Disorder Detection | EEG AI System")
+    st.markdown('</div>', unsafe_allow_html=True)
+
+# ------------------ FOOTER ------------------
+st.markdown("""
+<hr>
+<center>🚀 Advanced EEG Monitoring System | Designed for Bio Engineers</center>
+""", unsafe_allow_html=True)
